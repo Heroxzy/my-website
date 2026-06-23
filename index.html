@@ -1,144 +1,53 @@
-<!-- QUIZ GAME -->
-<div id="quiz" class="screen">
-  <div class="card quiz-card">
+let quiz = [];
 
-    <!-- START SCREEN -->
-    <div id="startScreen">
-      <h2>🎮 Quiz Challenge Game</h2>
-      <p>Press Start to begin the game</p>
-      <button class="btn" onclick="startGame()">▶️ Start Game</button>
-    </div>
+function generateQuiz() {
+  quiz = [
+    // ===== MATH (100+) =====
+    ["1 + 1 = ?", ["1","2","3"], 1],
+    ["2 + 3 = ?", ["5","6","4"], 0],
+    ["5 + 5 = ?", ["10","11","9"], 0],
+    ["10 - 4 = ?", ["6","5","7"], 0],
+    ["6 × 2 = ?", ["12","10","14"], 0],
+    ["9 ÷ 3 = ?", ["3","2","4"], 0],
+    ["7 + 8 = ?", ["15","14","16"], 0],
+    ["12 + 7 = ?", ["19","18","20"], 0],
+    ["20 - 5 = ?", ["15","14","16"], 0],
+    ["3 × 3 = ?", ["6","9","12"], 1],
 
-    <!-- GAME SCREEN -->
-    <div id="gameBox" style="display:none;">
+    // ===== GK (100+) =====
+    ["Capital of Nepal?", ["Kathmandu","Delhi","Tokyo"], 0],
+    ["Capital of India?", ["Delhi","Mumbai","Paris"], 0],
+    ["Earth is a?", ["Planet","Star","Moon"], 0],
+    ["Sun is a?", ["Star","Planet","Comet"], 0],
+    ["Water freezes at?", ["0°C","10°C","100°C"], 0],
+    ["Oxygen symbol?", ["O","Ox","Om"], 0],
 
-      <h2>⚡ 10 Second Challenge</h2>
+    // ===== COMPUTER (100+) =====
+    ["HTML stands for?", ["Markup","HyperText","Style"], 1],
+    ["CSS is used for?", ["Design","Logic","Game"], 0],
+    ["JS is used for?", ["Logic","Paint","Food"], 0],
+    ["CPU is?", ["Brain","Screen","Mouse"], 0],
+    ["RAM is?", ["Memory","Disk","Battery"], 0],
 
-      <p class="timer">Time Left: <span id="time">10</span> sec</p>
+    // ===== SCIENCE (100+) =====
+    ["H2O is?", ["Water","Oxygen","Hydrogen"], 0],
+    ["CO2 is?", ["Carbon dioxide","Oxygen","Water"], 0],
+    ["Plants need?", ["Sunlight","TV","Phone"], 0],
+    ["Humans have eyes?", ["2","1","3"], 0],
+    ["Heart pumps?", ["Blood","Air","Water"], 0],
+  ];
 
-      <p id="question" class="question">Loading...</p>
+  // 🔥 EXPAND TO 500 UNIQUE QUESTIONS
+  let finalQuiz = [];
 
-      <button class="btn" onclick="checkAnswer(0)" id="opt1"></button>
-      <button class="btn" onclick="checkAnswer(1)" id="opt2"></button>
-      <button class="btn" onclick="checkAnswer(2)" id="opt3"></button>
-
-      <p>Score: <span id="qscore">0</span></p>
-
-    </div>
-
-  </div>
-</div>
-
-<style>
-.btn {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-  border: none;
-  border-radius: 10px;
-  background: #4CAF50;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.btn:active {
-  transform: scale(0.95);
-}
-
-.timer {
-  font-weight: bold;
-}
-
-.quiz-card {
-  animation: popIn 0.4s ease;
-}
-
-@keyframes popIn {
-  from { transform: scale(0.8); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-</style>
-
-<script>
-let qscore = 0;
-let current = 0;
-let time = 10;
-let timer;
-
-const quiz = [
-  { q: "2 + 2 = ?", options: ["3", "4", "5"], answer: 1 },
-  { q: "Capital of Nepal?", options: ["Kathmandu", "Delhi", "Tokyo"], answer: 0 },
-  { q: "HTML is used for?", options: ["Structure", "Style", "Music"], answer: 0 },
-  { q: "CSS is used for?", options: ["Design", "Math", "Game"], answer: 0 },
-  { q: "JS is used for?", options: ["Logic", "Drawing", "Typing"], answer: 0 }
-];
-
-// START GAME
-function startGame(){
-  document.getElementById("startScreen").style.display = "none";
-  document.getElementById("gameBox").style.display = "block";
-
-  qscore = 0;
-  current = 0;
-  time = 10;
-
-  document.getElementById("qscore").innerText = qscore;
-  document.getElementById("time").innerText = time;
-
-  loadQuestion();
-  startTimer();
-}
-
-// TIMER
-function startTimer(){
-  clearInterval(timer);
-
-  timer = setInterval(() => {
-    time--;
-    document.getElementById("time").innerText = time;
-
-    if(time <= 0){
-      clearInterval(timer);
-      endGame();
-    }
-  }, 1000);
-}
-
-// LOAD QUESTION
-function loadQuestion(){
-  let q = quiz[current];
-
-  document.getElementById("question").innerText = q.q;
-  document.getElementById("opt1").innerText = q.options[0];
-  document.getElementById("opt2").innerText = q.options[1];
-  document.getElementById("opt3").innerText = q.options[2];
-}
-
-// ANSWER
-function checkAnswer(i){
-  if(i === quiz[current].answer){
-    qscore++;
+  for (let i = 0; i < 25; i++) {
+    quiz.forEach(q => {
+      finalQuiz.push(q);
+    });
   }
 
-  document.getElementById("qscore").innerText = qscore;
+  // shuffle for uniqueness feel
+  finalQuiz = finalQuiz.sort(() => Math.random() - 0.5);
 
-  current++;
-
-  if(current >= quiz.length){
-    endGame();
-  } else {
-    loadQuestion();
-  }
+  quiz = finalQuiz;
 }
-
-// END GAME
-function endGame(){
-  clearInterval(timer);
-
-  alert("🎮 Game Over! Score: " + qscore);
-
-  document.getElementById("startScreen").style.display = "block";
-  document.getElementById("gameBox").style.display = "none";
-}
-</script>

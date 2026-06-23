@@ -1,132 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Fun Study Hub</title>
+<hr>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f6f9;
-    }
+<h2>🎮 Mini Click Game</h2>
 
-    /* HEADER */
-    header {
-      background: linear-gradient(90deg, #4CAF50, #2E7D32);
-      color: white;
-      padding: 30px;
-      text-align: center;
-    }
+<p>Click the button as many times as you can!</p>
 
-    header h1 {
-      margin: 0;
-      font-size: 40px;
-    }
+<h3>Score: <span id="score">0</span></h3>
 
-    header p {
-      margin-top: 10px;
-      font-size: 18px;
-    }
+<button onclick="addScore()" style="padding:10px 20px; font-size:16px; cursor:pointer;">
+  Click Me!
+</button>
 
-    /* NAV */
-    nav {
-      background: #222;
-      text-align: center;
-      padding: 10px;
-    }
+<br><br>
 
-    nav a {
-      color: white;
-      margin: 10px;
-      text-decoration: none;
-      font-weight: bold;
-    }
+<button onclick="resetScore()" style="padding:8px 15px;">
+  Reset Game
+</button>
 
-    nav a:hover {
-      color: #4CAF50;
-    }
+<script>
+let score = 0;
 
-    /* SECTIONS */
-    .container {
-      padding: 20px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
+function addScore() {
+  score++;
+  document.getElementById("score").innerText = score;
+}
 
-    .card {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0px 2px 10px rgba(0,0,0,0.1);
-      transition: 0.3s;
-    }
-
-    .card:hover {
-      transform: scale(1.05);
-    }
-
-    button {
-      padding: 10px;
-      border: none;
-      background: #4CAF50;
-      color: white;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #2E7D32;
-    }
-
-    footer {
-      background: #222;
-      color: white;
-      text-align: center;
-      padding: 15px;
-      margin-top: 20px;
-    }
-  </style>
-</head>
-
-<body>
-
-<header>
-  <h1>🎉 Fun Study Hub</h1>
-  <p>Learn • Play • Grow</p>
-</header>
-
-<nav>
-  <a href="#">Home</a>
-  <a href="#">Study</a>
-  <a href="#">Fun</a>
-  <a href="#">Contact</a>
-</nav>
-
-<div class="container">
-
-  <div class="card">
-    <h2>📚 Study</h2>
-    <p>Learn Math, Science, Computer easily.</p>
-  </div>
-
-  <div class="card">
-    <h2>🎮 Fun Zone</h2>
-    <p>Enjoy jokes, puzzles, and mini games.</p>
-    <button onclick="alert('Keep learning and have fun! 🚀')">Click Me</button>
-  </div>
-
-  <div class="card">
-    <h2>🧠 Knowledge</h2>
-    <p>Internet, Forms, Tables and more basics.</p>
-  </div>
-
-</div>
-
-<footer>
-  <p>Made with ❤️ using GitHub Pages</p>
-</footer>
-
-</body>
-</html>
+function resetScore() {
+  score = 0;
+  document.getElementById("score").innerText = score;
+}
+</script>

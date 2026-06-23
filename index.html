@@ -1,144 +1,146 @@
-<!-- QUIZ GAME -->
-<div id="quiz" class="screen">
-  <div class="card quiz-card">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mini Games App</title>
 
-    <!-- START SCREEN -->
-    <div id="startScreen">
-      <h2>🎮 Quiz Challenge Game</h2>
-      <p>Press Start to begin the game</p>
-      <button class="btn" onclick="startGame()">▶️ Start Game</button>
-    </div>
+<style>
+  body {
+    margin: 0;
+    font-family: Arial;
+    background: #f2f2f2;
+  }
 
-    <!-- GAME SCREEN -->
-    <div id="gameBox" style="display:none;">
+  .topbar {
+    background: #4CAF50;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+  }
 
-      <h2>⚡ 10 Second Challenge</h2>
+  .screen {
+    display: none;
+    padding: 15px;
+  }
 
-      <p class="timer">Time Left: <span id="time">10</span> sec</p>
+  .active {
+    display: block;
+  }
 
-      <p id="question" class="question">Loading...</p>
+  .card {
+    background: white;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
 
-      <button class="btn" onclick="checkAnswer(0)" id="opt1"></button>
-      <button class="btn" onclick="checkAnswer(1)" id="opt2"></button>
-      <button class="btn" onclick="checkAnswer(2)" id="opt3"></button>
+  button {
+    padding: 12px;
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    background: #4CAF50;
+    color: white;
+    font-size: 16px;
+    margin-top: 10px;
+  }
 
-      <p>Score: <span id="qscore">0</span></p>
+  .navbar {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    background: white;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+  }
 
-    </div>
+  .nav {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+  }
 
+</style>
+</head>
+
+<body>
+
+<div class="topbar">🎮 Mini Games App</div>
+
+<!-- HOME -->
+<div id="home" class="screen active">
+  <div class="card">
+    <h2>Welcome 👋</h2>
+    <p>Play Click Game and Quiz Game</p>
   </div>
 </div>
 
-<style>
-.btn {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-  border: none;
-  border-radius: 10px;
-  background: #4CAF50;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-}
+<!-- CLICK GAME -->
+<div id="click" class="screen">
+  <div class="card">
+    <h2>👆 Click Game</h2>
+    <p>Score: <span id="score">0</span></p>
+    <button onclick="addScore()">Click Me!</button>
+    <button onclick="resetScore()">Reset</button>
+  </div>
+</div>
 
-.btn:active {
-  transform: scale(0.95);
-}
+<!-- QUIZ GAME -->
+<div id="quiz" class="screen">
+  <div class="card">
+    <h2>🧠 Quiz Game</h2>
 
-.timer {
-  font-weight: bold;
-}
+    <p id="question">What is 2 + 2?</p>
 
-.quiz-card {
-  animation: popIn 0.4s ease;
-}
+    <button onclick="answer(4)">4</button>
+    <button onclick="answer(5)">5</button>
+    <button onclick="answer(6)">6</button>
 
-@keyframes popIn {
-  from { transform: scale(0.8); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-</style>
+    <p>Score: <span id="qscore">0</span></p>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <div class="nav" onclick="show('home')">🏠 Home</div>
+  <div class="nav" onclick="show('click')">👆 Click</div>
+  <div class="nav" onclick="show('quiz')">🧠 Quiz</div>
+</div>
 
 <script>
+let score = 0;
 let qscore = 0;
-let current = 0;
-let time = 10;
-let timer;
 
-const quiz = [
-  { q: "2 + 2 = ?", options: ["3", "4", "5"], answer: 1 },
-  { q: "Capital of Nepal?", options: ["Kathmandu", "Delhi", "Tokyo"], answer: 0 },
-  { q: "HTML is used for?", options: ["Structure", "Style", "Music"], answer: 0 },
-  { q: "CSS is used for?", options: ["Design", "Math", "Game"], answer: 0 },
-  { q: "JS is used for?", options: ["Logic", "Drawing", "Typing"], answer: 0 }
-];
-
-// START GAME
-function startGame(){
-  document.getElementById("startScreen").style.display = "none";
-  document.getElementById("gameBox").style.display = "block";
-
-  qscore = 0;
-  current = 0;
-  time = 10;
-
-  document.getElementById("qscore").innerText = qscore;
-  document.getElementById("time").innerText = time;
-
-  loadQuestion();
-  startTimer();
+function show(page){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(page).classList.add('active');
 }
 
-// TIMER
-function startTimer(){
-  clearInterval(timer);
-
-  timer = setInterval(() => {
-    time--;
-    document.getElementById("time").innerText = time;
-
-    if(time <= 0){
-      clearInterval(timer);
-      endGame();
-    }
-  }, 1000);
+function addScore(){
+  score++;
+  document.getElementById("score").innerText = score;
 }
 
-// LOAD QUESTION
-function loadQuestion(){
-  let q = quiz[current];
-
-  document.getElementById("question").innerText = q.q;
-  document.getElementById("opt1").innerText = q.options[0];
-  document.getElementById("opt2").innerText = q.options[1];
-  document.getElementById("opt3").innerText = q.options[2];
+function resetScore(){
+  score = 0;
+  document.getElementById("score").innerText = score;
 }
 
-// ANSWER
-function checkAnswer(i){
-  if(i === quiz[current].answer){
+function answer(ans){
+  if(ans === 4){
     qscore++;
-  }
-
-  document.getElementById("qscore").innerText = qscore;
-
-  current++;
-
-  if(current >= quiz.length){
-    endGame();
+    alert("Correct 🎉");
   } else {
-    loadQuestion();
+    alert("Wrong ❌");
   }
-}
-
-// END GAME
-function endGame(){
-  clearInterval(timer);
-
-  alert("🎮 Game Over! Score: " + qscore);
-
-  document.getElementById("startScreen").style.display = "block";
-  document.getElementById("gameBox").style.display = "none";
+  document.getElementById("qscore").innerText = qscore;
 }
 </script>
+
+</body>
+</html>

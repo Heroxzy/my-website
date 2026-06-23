@@ -1,77 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fun Study Hub</title>
+  <title>Fun Study Hub - Login</title>
 
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
+      font-family: Arial;
       background: #f4f6f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
 
-    header {
-      background: linear-gradient(90deg, #4CAF50, #2E7D32);
-      color: white;
-      padding: 20px;
+    .login-box {
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0px 2px 10px rgba(0,0,0,0.2);
+      width: 300px;
       text-align: center;
     }
 
-    header h1 {
-      font-size: 28px;
-      margin: 0;
+    h2 {
+      margin-bottom: 20px;
     }
 
-    nav {
-      background: #222;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
+    input {
+      width: 90%;
       padding: 10px;
-    }
-
-    nav a {
-      color: white;
-      margin: 8px;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 14px;
-    }
-
-    .container {
-      padding: 10px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 15px;
-    }
-
-    .card {
-      background: white;
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0px 2px 10px rgba(0,0,0,0.1);
-      transition: 0.3s;
-    }
-
-    .card:hover {
-      transform: scale(1.03);
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
     }
 
     button {
+      width: 100%;
       padding: 10px;
-      border: none;
       background: #4CAF50;
       color: white;
+      border: none;
       border-radius: 5px;
-      width: 100%;
+      cursor: pointer;
     }
 
-    footer {
-      background: #222;
-      color: white;
+    .error {
+      color: red;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    .dashboard {
+      display: none;
+      padding: 20px;
       text-align: center;
-      padding: 10px;
-      font-size: 12px;
     }
   </style>
 </head>
+
+<body>
+
+<!-- LOGIN PAGE -->
+<div class="login-box" id="loginBox">
+  <h2>🔐 Login</h2>
+
+  <input type="text" id="user" placeholder="Username">
+  <input type="password" id="pass" placeholder="Password">
+
+  <button onclick="login()">Login</button>
+
+  <p class="error" id="error"></p>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dashboard" id="dashboard">
+  <h1>🎉 Welcome to Fun Study Hub</h1>
+  <p>You are logged in!</p>
+
+  <h3>📚 Study</h3>
+  <p>Math, Science, Computer basics</p>
+
+  <h3>🎮 Fun</h3>
+  <p>Jokes, Games, Entertainment</p>
+
+  <button onclick="logout()">Logout</button>
+</div>
+
+<script>
+  function login()

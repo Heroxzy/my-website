@@ -1,41 +1,35 @@
 <!-- QUIZ GAME -->
 <div id="quiz" class="screen">
   <div class="card quiz-card">
-    <h2>⚡ 10 Second Speed Quiz</h2>
 
-    <p class="timer">Time Left: <span id="time">10</span> sec</p>
+    <!-- START SCREEN -->
+    <div id="startScreen">
+      <h2>🎮 Quiz Challenge Game</h2>
+      <p>Press Start to begin the game</p>
+      <button class="btn" onclick="startGame()">▶️ Start Game</button>
+    </div>
 
-    <p id="question" class="question">Loading...</p>
+    <!-- GAME SCREEN -->
+    <div id="gameBox" style="display:none;">
 
-    <button class="btn" onclick="checkAnswer(0)" id="opt1"></button>
-    <button class="btn" onclick="checkAnswer(1)" id="opt2"></button>
-    <button class="btn" onclick="checkAnswer(2)" id="opt3"></button>
+      <h2>⚡ 10 Second Challenge</h2>
 
-    <p>Score: <span id="qscore">0</span></p>
+      <p class="timer">Time Left: <span id="time">10</span> sec</p>
+
+      <p id="question" class="question">Loading...</p>
+
+      <button class="btn" onclick="checkAnswer(0)" id="opt1"></button>
+      <button class="btn" onclick="checkAnswer(1)" id="opt2"></button>
+      <button class="btn" onclick="checkAnswer(2)" id="opt3"></button>
+
+      <p>Score: <span id="qscore">0</span></p>
+
+    </div>
+
   </div>
 </div>
 
 <style>
-/* GAME ANIMATIONS */
-.quiz-card {
-  animation: popIn 0.5s ease;
-}
-
-@keyframes popIn {
-  from { transform: scale(0.8); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-
-.question {
-  animation: fadeIn 0.5s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* BUTTON ANIMATION */
 .btn {
   width: 100%;
   padding: 12px;
@@ -45,29 +39,24 @@
   background: #4CAF50;
   color: white;
   font-size: 16px;
-  transition: 0.2s;
   cursor: pointer;
 }
 
 .btn:active {
   transform: scale(0.95);
-  background: #2E7D32;
 }
 
-/* TIMER WARNING */
 .timer {
   font-weight: bold;
 }
 
-.warning {
-  color: red;
-  animation: pulse 0.5s infinite;
+.quiz-card {
+  animation: popIn 0.4s ease;
 }
 
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
+@keyframes popIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
 }
 </style>
 
@@ -78,41 +67,36 @@ let time = 10;
 let timer;
 
 const quiz = [
-  {
-    q: "2 + 2 = ?",
-    options: ["3", "4", "5"],
-    answer: 1
-  },
-  {
-    q: "Capital of Nepal?",
-    options: ["Kathmandu", "Delhi", "Tokyo"],
-    answer: 0
-  },
-  {
-    q: "HTML stands for?",
-    options: ["Markup", "Cooking", "Gaming"],
-    answer: 0
-  },
-  {
-    q: "CSS is used for?",
-    options: ["Design", "Math", "Music"],
-    answer: 0
-  },
-  {
-    q: "JavaScript is for?",
-    options: ["Logic", "Painting", "Typing"],
-    answer: 0
-  }
+  { q: "2 + 2 = ?", options: ["3", "4", "5"], answer: 1 },
+  { q: "Capital of Nepal?", options: ["Kathmandu", "Delhi", "Tokyo"], answer: 0 },
+  { q: "HTML is used for?", options: ["Structure", "Style", "Music"], answer: 0 },
+  { q: "CSS is used for?", options: ["Design", "Math", "Game"], answer: 0 },
+  { q: "JS is used for?", options: ["Logic", "Drawing", "Typing"], answer: 0 }
 ];
 
+// START GAME
+function startGame(){
+  document.getElementById("startScreen").style.display = "none";
+  document.getElementById("gameBox").style.display = "block";
+
+  qscore = 0;
+  current = 0;
+  time = 10;
+
+  document.getElementById("qscore").innerText = qscore;
+  document.getElementById("time").innerText = time;
+
+  loadQuestion();
+  startTimer();
+}
+
+// TIMER
 function startTimer(){
+  clearInterval(timer);
+
   timer = setInterval(() => {
     time--;
     document.getElementById("time").innerText = time;
-
-    if(time <= 5){
-      document.querySelector(".timer").classList.add("warning");
-    }
 
     if(time <= 0){
       clearInterval(timer);
@@ -121,21 +105,17 @@ function startTimer(){
   }, 1000);
 }
 
+// LOAD QUESTION
 function loadQuestion(){
   let q = quiz[current];
 
-  let questionEl = document.getElementById("question");
-  questionEl.style.opacity = 0;
-
-  setTimeout(() => {
-    questionEl.innerText = q.q;
-    document.getElementById("opt1").innerText = q.options[0];
-    document.getElementById("opt2").innerText = q.options[1];
-    document.getElementById("opt3").innerText = q.options[2];
-    questionEl.style.opacity = 1;
-  }, 200);
+  document.getElementById("question").innerText = q.q;
+  document.getElementById("opt1").innerText = q.options[0];
+  document.getElementById("opt2").innerText = q.options[1];
+  document.getElementById("opt3").innerText = q.options[2];
 }
 
+// ANSWER
 function checkAnswer(i){
   if(i === quiz[current].answer){
     qscore++;
@@ -152,24 +132,13 @@ function checkAnswer(i){
   }
 }
 
+// END GAME
 function endGame(){
   clearInterval(timer);
-  alert("⏰ Game Over! Your Score: " + qscore);
 
-  current = 0;
-  qscore = 0;
-  time = 10;
+  alert("🎮 Game Over! Score: " + qscore);
 
-  document.getElementById("qscore").innerText = qscore;
-  document.getElementById("time").innerText = time;
-
-  document.querySelector(".timer").classList.remove("warning");
-
-  loadQuestion();
-  startTimer();
+  document.getElementById("startScreen").style.display = "block";
+  document.getElementById("gameBox").style.display = "none";
 }
-
-// start game
-loadQuestion();
-startTimer();
 </script>

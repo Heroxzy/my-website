@@ -1,81 +1,175 @@
 <!-- QUIZ GAME -->
 <div id="quiz" class="screen">
-  <div class="card">
-    <h2>🧠 Quiz Game</h2>
+  <div class="card quiz-card">
+    <h2>⚡ 10 Second Speed Quiz</h2>
 
-    <p id="question">Loading...</p>
+    <p class="timer">Time Left: <span id="time">10</span> sec</p>
 
-    <button onclick="checkAnswer(0)" id="opt1"></button>
-    <button onclick="checkAnswer(1)" id="opt2"></button>
-    <button onclick="checkAnswer(2)" id="opt3"></button>
+    <p id="question" class="question">Loading...</p>
+
+    <button class="btn" onclick="checkAnswer(0)" id="opt1"></button>
+    <button class="btn" onclick="checkAnswer(1)" id="opt2"></button>
+    <button class="btn" onclick="checkAnswer(2)" id="opt3"></button>
 
     <p>Score: <span id="qscore">0</span></p>
-    <button onclick="nextQuestion()">Next ➡️</button>
   </div>
 </div>
 
+<style>
+/* GAME ANIMATIONS */
+.quiz-card {
+  animation: popIn 0.5s ease;
+}
+
+@keyframes popIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.question {
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* BUTTON ANIMATION */
+.btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 10px;
+  background: #4CAF50;
+  color: white;
+  font-size: 16px;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.btn:active {
+  transform: scale(0.95);
+  background: #2E7D32;
+}
+
+/* TIMER WARNING */
+.timer {
+  font-weight: bold;
+}
+
+.warning {
+  color: red;
+  animation: pulse 0.5s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+</style>
+
 <script>
-let score = 0;
 let qscore = 0;
 let current = 0;
+let time = 10;
+let timer;
 
 const quiz = [
   {
-    q: "What is 2 + 2?",
+    q: "2 + 2 = ?",
     options: ["3", "4", "5"],
     answer: 1
   },
   {
-    q: "What is capital of Nepal?",
-    options: ["Kathmandu", "Delhi", "London"],
+    q: "Capital of Nepal?",
+    options: ["Kathmandu", "Delhi", "Tokyo"],
     answer: 0
   },
   {
-    q: "HTML is used for?",
-    options: ["Styling", "Structure", "Gaming"],
-    answer: 1
+    q: "HTML stands for?",
+    options: ["Markup", "Cooking", "Gaming"],
+    answer: 0
   },
   {
     q: "CSS is used for?",
-    options: ["Design", "Database", "Hardware"],
+    options: ["Design", "Math", "Music"],
     answer: 0
   },
   {
-    q: "JavaScript is used for?",
-    options: ["Logic", "Painting", "Printing"],
+    q: "JavaScript is for?",
+    options: ["Logic", "Painting", "Typing"],
     answer: 0
   }
 ];
 
+function startTimer(){
+  timer = setInterval(() => {
+    time--;
+    document.getElementById("time").innerText = time;
+
+    if(time <= 5){
+      document.querySelector(".timer").classList.add("warning");
+    }
+
+    if(time <= 0){
+      clearInterval(timer);
+      endGame();
+    }
+  }, 1000);
+}
+
 function loadQuestion(){
   let q = quiz[current];
-  document.getElementById("question").innerText = q.q;
-  document.getElementById("opt1").innerText = q.options[0];
-  document.getElementById("opt2").innerText = q.options[1];
-  document.getElementById("opt3").innerText = q.options[2];
+
+  let questionEl = document.getElementById("question");
+  questionEl.style.opacity = 0;
+
+  setTimeout(() => {
+    questionEl.innerText = q.q;
+    document.getElementById("opt1").innerText = q.options[0];
+    document.getElementById("opt2").innerText = q.options[1];
+    document.getElementById("opt3").innerText = q.options[2];
+    questionEl.style.opacity = 1;
+  }, 200);
 }
 
 function checkAnswer(i){
   if(i === quiz[current].answer){
     qscore++;
-    alert("Correct 🎉");
-  } else {
-    alert("Wrong ❌");
   }
+
   document.getElementById("qscore").innerText = qscore;
-}
 
-function nextQuestion(){
   current++;
+
   if(current >= quiz.length){
-    alert("Quiz Finished! Your score: " + qscore);
-    current = 0;
-    qscore = 0;
-    document.getElementById("qscore").innerText = qscore;
+    endGame();
+  } else {
+    loadQuestion();
   }
-  loadQuestion();
 }
 
-// start quiz
+function endGame(){
+  clearInterval(timer);
+  alert("⏰ Game Over! Your Score: " + qscore);
+
+  current = 0;
+  qscore = 0;
+  time = 10;
+
+  document.getElementById("qscore").innerText = qscore;
+  document.getElementById("time").innerText = time;
+
+  document.querySelector(".timer").classList.remove("warning");
+
+  loadQuestion();
+  startTimer();
+}
+
+// start game
 loadQuestion();
+startTimer();
 </script>

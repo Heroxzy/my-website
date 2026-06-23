@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fun Study Hub</title>
+<title>Mini Games App</title>
 
 <style>
   body {
@@ -12,7 +12,6 @@
     background: #f2f2f2;
   }
 
-  /* TOP BAR */
   .topbar {
     background: #4CAF50;
     color: white;
@@ -22,31 +21,34 @@
     font-weight: bold;
   }
 
-  /* CONTENT */
-  .content {
+  .screen {
+    display: none;
     padding: 15px;
+  }
+
+  .active {
+    display: block;
   }
 
   .card {
     background: white;
     padding: 15px;
-    margin-bottom: 15px;
+    margin: 10px 0;
     border-radius: 15px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   }
 
-  /* BUTTON */
-  .btn {
-    background: #4CAF50;
-    color: white;
-    padding: 10px;
+  button {
+    padding: 12px;
+    width: 100%;
     border: none;
     border-radius: 10px;
-    width: 100%;
+    background: #4CAF50;
+    color: white;
     font-size: 16px;
+    margin-top: 10px;
   }
 
-  /* BOTTOM NAV */
   .navbar {
     position: fixed;
     bottom: 0;
@@ -56,50 +58,89 @@
     box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
   }
 
-  .nav-item {
+  .nav {
     flex: 1;
     text-align: center;
     padding: 10px;
-    font-size: 14px;
+    cursor: pointer;
   }
 
-  .nav-item:hover {
-    background: #f0f0f0;
-  }
 </style>
-
 </head>
 
 <body>
 
-<div class="topbar">📱 Fun Study Hub</div>
+<div class="topbar">🎮 Mini Games App</div>
 
-<div class="content">
-
+<!-- HOME -->
+<div id="home" class="screen active">
   <div class="card">
-    <h3>📚 Study</h3>
-    <p>Math, Science, Computer basics</p>
+    <h2>Welcome 👋</h2>
+    <p>Play Click Game and Quiz Game</p>
   </div>
-
-  <div class="card">
-    <h3>🎮 Fun Zone</h3>
-    <p>Jokes, puzzles, mini games</p>
-    <button class="btn" onclick="alert('Keep learning 🚀')">Click Me</button>
-  </div>
-
-  <div class="card">
-    <h3>🧠 Knowledge</h3>
-    <p>Internet, Forms, Tables, Network</p>
-  </div>
-
 </div>
 
+<!-- CLICK GAME -->
+<div id="click" class="screen">
+  <div class="card">
+    <h2>👆 Click Game</h2>
+    <p>Score: <span id="score">0</span></p>
+    <button onclick="addScore()">Click Me!</button>
+    <button onclick="resetScore()">Reset</button>
+  </div>
+</div>
+
+<!-- QUIZ GAME -->
+<div id="quiz" class="screen">
+  <div class="card">
+    <h2>🧠 Quiz Game</h2>
+
+    <p id="question">What is 2 + 2?</p>
+
+    <button onclick="answer(4)">4</button>
+    <button onclick="answer(5)">5</button>
+    <button onclick="answer(6)">6</button>
+
+    <p>Score: <span id="qscore">0</span></p>
+  </div>
+</div>
+
+<!-- NAVBAR -->
 <div class="navbar">
-  <div class="nav-item">🏠 Home</div>
-  <div class="nav-item">📚 Study</div>
-  <div class="nav-item">🎮 Fun</div>
-  <div class="nav-item">⚙️ More</div>
+  <div class="nav" onclick="show('home')">🏠 Home</div>
+  <div class="nav" onclick="show('click')">👆 Click</div>
+  <div class="nav" onclick="show('quiz')">🧠 Quiz</div>
 </div>
+
+<script>
+let score = 0;
+let qscore = 0;
+
+function show(page){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(page).classList.add('active');
+}
+
+function addScore(){
+  score++;
+  document.getElementById("score").innerText = score;
+}
+
+function resetScore(){
+  score = 0;
+  document.getElementById("score").innerText = score;
+}
+
+function answer(ans){
+  if(ans === 4){
+    qscore++;
+    alert("Correct 🎉");
+  } else {
+    alert("Wrong ❌");
+  }
+  document.getElementById("qscore").innerText = qscore;
+}
+</script>
 
 </body>
 </html>

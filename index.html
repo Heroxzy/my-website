@@ -1,20 +1,73 @@
-<!-- QUIZ GAME -->
-<div id="quiz" class="screen">
-  <div class="card">
+let qscore = 0;
+let current = 0;
+let level = 0;
 
-    <h2>🧠 Math Quiz Game</h2>
+const quiz = [
+  // EASY
+  [
+    {q:"1 + 1 = ?", o:["1","2","3"], a:1},
+    {q:"2 + 3 = ?", o:["5","6","4"], a:0},
+    {q:"5 - 2 = ?", o:["3","2","4"], a:0},
+  ],
 
-    <p id="level">Level: Easy</p>
+  // MEDIUM
+  [
+    {q:"12 + 8 = ?", o:["18","20","22"], a:1},
+    {q:"15 - 7 = ?", o:["8","9","7"], a:0},
+    {q:"3 × 4 = ?", o:["12","10","14"], a:0},
+  ],
 
-    <p id="question">Loading...</p>
+  // HARD
+  [
+    {q:"25 × 4 = ?", o:["90","100","110"], a:1},
+    {q:"144 ÷ 12 = ?", o:["11","12","13"], a:1},
+    {q:"13 × 13 = ?", o:["169","144","121"], a:0},
+  ]
+];
 
-    <button onclick="check(0)" id="opt1"></button>
-    <button onclick="check(1)" id="opt2"></button>
-    <button onclick="check(2)" id="opt3"></button>
+function load(){
+  let q = quiz[level][current];
 
-    <p>Score: <span id="qscore">0</span></p>
+  document.getElementById("question").innerText = q.q;
+  document.getElementById("opt1").innerText = q.o[0];
+  document.getElementById("opt2").innerText = q.o[1];
+  document.getElementById("opt3").innerText = q.o[2];
 
-    <button onclick="nextLevel()">Next Level ➡️</button>
+  document.getElementById("level").innerText =
+    level === 0 ? "Level: Easy" :
+    level === 1 ? "Level: Medium" :
+    "Level: Hard";
+}
 
-  </div>
-</div>
+function check(i){
+  if(i === quiz[level][current].a){
+    qscore++;
+    alert("Correct 🎉");
+  } else {
+    alert("Wrong ❌");
+  }
+
+  document.getElementById("qscore").innerText = qscore;
+
+  current++;
+
+  if(current >= quiz[level].length){
+    alert("Level Complete!");
+    nextLevel();
+  } else {
+    load();
+  }
+}
+
+function nextLevel(){
+  level++;
+  if(level > 2){
+    alert("Game Finished! Score: " + qscore);
+    level = 0;
+    qscore = 0;
+  }
+
+  current = 0;
+  document.getElementById("qscore").innerText = qscore;
+  load();
+}

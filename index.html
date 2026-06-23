@@ -1,62 +1,31 @@
 <hr>
 
-<h2>⏱️ 30-Second Click Challenge</h2>
+<div style="max-width:500px;margin:auto;background:white;padding:20px;border-radius:15px;box-shadow:0 10px 25px rgba(0,0,0,0.1);">
 
-<p>Click as fast as you can before time runs out!</p>
+  <h2 style="text-align:center;">🧠 Quiz Game</h2>
 
-<h3>Time Left: <span id="time">30</span> seconds</h3>
-<h3>Score: <span id="score">0</span></h3>
+  <div id="question"
+       style="font-size:18px;margin:20px 0;text-align:center;font-weight:bold;">
+    Click Start to begin!
+  </div>
 
-<button id="clickBtn" onclick="addScore()" style="padding:10px 20px; font-size:16px;">
-  Click Me!
-</button>
+  <div id="options" style="display:flex;flex-direction:column;gap:10px;"></div>
 
-<br><br>
+  <hr>
 
-<button onclick="startGame()" style="padding:8px 15px;">Start Game</button>
-<button onclick="resetGame()" style="padding:8px 15px;">Reset</button>
+  <p style="text-align:center;">
+    Score: <b><span id="quizScore">0</span></b> |
+    🏆 High Score: <b><span id="quizHighScore">0</span></b>
+  </p>
 
-<script>
-let score = 0;
-let time = 30;
-let timer = null;
-let gameRunning = false;
+  <div style="text-align:center;">
+    <button onclick="startQuiz()" style="padding:10px 15px;border:none;background:#4CAF50;color:white;border-radius:8px;cursor:pointer;">
+      Start Quiz
+    </button>
 
-function startGame() {
-  if (gameRunning) return;
+    <button onclick="resetQuiz()" style="padding:10px 15px;border:none;background:#f44336;color:white;border-radius:8px;cursor:pointer;">
+      Reset
+    </button>
+  </div>
 
-  gameRunning = true;
-  score = 0;
-  time = 30;
-
-  document.getElementById("score").innerText = score;
-  document.getElementById("time").innerText = time;
-
-  timer = setInterval(() => {
-    time--;
-    document.getElementById("time").innerText = time;
-
-    if (time <= 0) {
-      clearInterval(timer);
-      gameRunning = false;
-      alert("⏰ Time's up! Your score: " + score);
-    }
-  }, 1000);
-}
-
-function addScore() {
-  if (!gameRunning) return;
-  score++;
-  document.getElementById("score").innerText = score;
-}
-
-function resetGame() {
-  clearInterval(timer);
-  gameRunning = false;
-  score = 0;
-  time = 30;
-
-  document.getElementById("score").innerText = score;
-  document.getElementById("time").innerText = time;
-}
-</script>
+</div>

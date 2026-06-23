@@ -1,31 +1,62 @@
 <hr>
 
-<h2>🎮 Mini Click Game</h2>
+<h2>⏱️ 30-Second Click Challenge</h2>
 
-<p>Click the button as many times as you can!</p>
+<p>Click as fast as you can before time runs out!</p>
 
+<h3>Time Left: <span id="time">30</span> seconds</h3>
 <h3>Score: <span id="score">0</span></h3>
 
-<button onclick="addScore()" style="padding:10px 20px; font-size:16px; cursor:pointer;">
+<button id="clickBtn" onclick="addScore()" style="padding:10px 20px; font-size:16px;">
   Click Me!
 </button>
 
 <br><br>
 
-<button onclick="resetScore()" style="padding:8px 15px;">
-  Reset Game
-</button>
+<button onclick="startGame()" style="padding:8px 15px;">Start Game</button>
+<button onclick="resetGame()" style="padding:8px 15px;">Reset</button>
 
 <script>
 let score = 0;
+let time = 30;
+let timer = null;
+let gameRunning = false;
+
+function startGame() {
+  if (gameRunning) return;
+
+  gameRunning = true;
+  score = 0;
+  time = 30;
+
+  document.getElementById("score").innerText = score;
+  document.getElementById("time").innerText = time;
+
+  timer = setInterval(() => {
+    time--;
+    document.getElementById("time").innerText = time;
+
+    if (time <= 0) {
+      clearInterval(timer);
+      gameRunning = false;
+      alert("⏰ Time's up! Your score: " + score);
+    }
+  }, 1000);
+}
 
 function addScore() {
+  if (!gameRunning) return;
   score++;
   document.getElementById("score").innerText = score;
 }
 
-function resetScore() {
+function resetGame() {
+  clearInterval(timer);
+  gameRunning = false;
   score = 0;
+  time = 30;
+
   document.getElementById("score").innerText = score;
+  document.getElementById("time").innerText = time;
 }
 </script>

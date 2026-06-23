@@ -1,130 +1,43 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fun Study Hub - Secure Login</title>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } 
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial;
-      background: linear-gradient(120deg, #4CAF50, #2196F3);
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+// 🔴 YOUR FIREBASE CONFIG HERE
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_AUTH_DOMAIN",
+  projectId: "YOUR_PROJECT_ID"
+};
 
-    .box {
-      background: white;
-      padding: 25px;
-      border-radius: 12px;
-      width: 320px;
-      text-align: center;
-      box-shadow: 0px 5px 20px rgba(0,0,0,0.3);
-    }
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-    input {
-      width: 90%;
-      padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
+window.signup = function() {
+  let email = document.getElementById("email").value;
+  let password = document.getElementById("password").value;
 
-    button {
-      width: 100%;
-      padding: 10px;
-      border: none;
-      background: #4CAF50;
-      color: white;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 16px;
-    }
+  createUserWithEmailAndPassword(auth, email, password)
+    .then(() => alert("Account Created!"))
+    .catch(err => alert(err.message));
+}
 
-    button:hover {
-      background: #2E7D32;
-    }
+window.login = function() {
+  let email = document.getElementById("email").value;
+  let password = document.getElementById("password").value;
 
-    .error {
-      color: red;
-      font-size: 14px;
-      margin-top: 10px;
-    }
-
-    .dashboard {
-      display: none;
-      text-align: center;
-      color: white;
-    }
-
-    .card {
-      background: white;
-      color: black;
-      margin: 10px;
-      padding: 15px;
-      border-radius: 10px;
-    }
-
-    .logout {
-      background: red;
-      margin-top: 10px;
-    }
-  </style>
-</head>
-
-<body>
-
-<!-- LOGIN -->
-<div class="box" id="loginBox">
-  <h2>🔐 Secure Login</h2>
-
-  <input type="text" id="user" placeholder="Username">
-  <input type="password" id="pass" placeholder="Password">
-
-  <button onclick="login()">Login</button>
-  <p class="error" id="error"></p>
-
-  <p>Demo: admin / 1234</p>
-</div>
-
-<!-- DASHBOARD -->
-<div class="dashboard" id="dashboard">
-  <h1>🎉 Welcome to Fun Study Hub</h1>
-
-  <div class="card">
-    <h3>📚 Study</h3>
-    <p>Math, Science, Computer</p>
-  </div>
-
-  <div class="card">
-    <h3>🎮 Fun</h3>
-    <p>Games & Entertainment</p>
-  </div>
-
-  <button class="logout" onclick="logout()">Logout</button>
-</div>
-
-<script>
-  function login() {
-    let u = document.getElementById("user").value;
-    let p = document.getElementById("pass").value;
-
-    if(u === "admin" && p === "1234") {
+  signInWithEmailAndPassword(auth, email, password)
+    .then(() => {
       document.getElementById("loginBox").style.display = "none";
       document.getElementById("dashboard").style.display = "block";
-    } else {
-      document.getElementById("error").innerText = "Invalid login!";
-    }
-  }
+    })
+    .catch(err => alert(err.message));
+}
 
-  function logout() {
+window.logout = function() {
+  signOut(auth).then(() => {
     document.getElementById("loginBox").style.display = "block";
     document.getElementById("dashboard").style.display = "none";
-  }
+  });
+}
 </script>
-
-</body>
-</html>

@@ -1,1 +1,36 @@
 
+<div class="card">
+  <h3>❌⭕ Tic-Tac-Toe</h3>
+  <div id="board"></div>
+</div>
+
+<style>
+#board{
+display:grid;
+grid-template-columns:repeat(3,80px);
+gap:5px;
+}
+.cell{
+width:80px;
+height:80px;
+font-size:30px;
+}
+</style>
+
+<script>
+let turn="X";
+
+for(let i=0;i<9;i++){
+ let btn=document.createElement("button");
+ btn.className="cell";
+
+ btn.onclick=function(){
+   if(btn.innerHTML==""){
+      btn.innerHTML=turn;
+      turn=turn==="X"?"O":"X";
+   }
+ };
+
+ document.getElementById("board").appendChild(btn);
+}
+</script>

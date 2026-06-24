@@ -1,4 +1,4 @@
-<div class="card">
+[10:32 am, 24/06/2026] Arun✓: <div class="card">
   <h3>🧠 Quiz Game</h3>
   <p>Test your knowledge!</p>
   <button class="btn" onclick="startQuiz()">Start Quiz</button>
@@ -19,3 +19,129 @@
   <h3>🏆 Leaderboard</h3>
   <ol id="leaderboard"></ol>
 </div>
+[10:34 am, 24/06/2026] Arun✓: const canvas = document.getElementById("snakeGame");
+const ctx = canvas.getContext("2d");
+
+let snake;
+let food;
+let dx;
+let dy;
+let score;
+let game;
+
+let highScore = localStorage.getItem("snakeHigh") || 0;
+document.getElementById("snakeHigh").innerText = highScore;
+
+function startSnake(){
+
+  snake = [{x:150,y:150}];
+
+  food = {
+    x: Math.floor(Math.random()*15)*20,
+    y: Math.floor(Math.random()*15)*20
+  };
+
+  dx = 20;
+  dy = 0;
+  score = 0;
+
+  document.getElementById("snakeScore").innerText = score;
+
+  clearInterval(game);
+  game = setInterval(drawSnake,150);
+}
+
+function setDirection(dir){
+
+  if(dir==="up" && dy===0){
+    dx=0; dy=-20;
+  }
+
+  if(dir==="down" && dy===0){
+    dx=0; dy=20;
+  }
+
+  if(dir==="left" && dx===0){
+    dx=-20; dy=0;
+  }
+
+  if(dir==="right" && dx===0){
+    dx=20; dy=0;
+  }
+}
+
+document.addEventListener("keydown", e => {
+
+  if(e.key==="ArrowUp") setDirection("up");
+  if(e.key==="ArrowDown") setDirection("down");
+  if(e.key==="ArrowLeft") setDirection("left");
+  if(e.key==="ArrowRight") setDirection("right");
+
+});
+
+function drawSnake(){
+
+  let head = {
+    x: snake[0].x + dx,
+    y: snake[0].y + dy
+  };
+
+  // Wall collision
+  if(
+    head.x < 0 ||
+    head.y < 0 ||
+    head.x >= 300 ||
+    head.y >= 300
+  ){
+    gameOver();
+    return;
+  }
+
+  // Self collision
+  for(let i=0;i<snake.length;i++){
+    if(head.x===snake[i].x && head.y===snake[i].y){
+      gameOver();
+      return;
+    }
+  }
+
+  snake.unshift(head);
+
+  if(head.x===food.x && head.y===food.y){
+
+    score++;
+    document.getElementById("snakeScore").innerText = score;
+
+    food = {
+      x: Math.floor(Math.random()*15)*20,
+      y: Math.floor(Math.random()*15)*20
+    };
+
+  } else {
+    snake.pop();
+  }
+
+  ctx.clearRect(0,0,300,300);
+
+  ctx.fillStyle = "red";
+  ctx.fillRect(food.x,food.y,20,20);
+
+  ctx.fillStyle = "green";
+
+  snake.forEach(part=>{
+    ctx.fillRect(part.x,part.y,20,20);
+  });
+}
+
+function gameOver(){
+
+  clearInterval(game);
+
+  if(score > highScore){
+    highScore = score;
+    localStorage.setItem("snakeHigh", highScore);
+    document.getElementById("snakeHigh").innerText = highScore;
+  }
+
+  alert("🐍 Game Over!\nScore: " + score);
+}
